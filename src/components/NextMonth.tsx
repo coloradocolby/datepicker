@@ -10,6 +10,10 @@ export const NextMonth = ({ className = "", children }) => {
       onClick={() => {
         handleMonthUpdate(moment(month).add(1, "month").toDate());
       }}
+      onKeyPress={() => {
+        handleMonthUpdate(moment(month).add(1, "month").toDate());
+      }}
+      tabIndex={0}
     >
       {children}
     </button>

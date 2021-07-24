@@ -10,6 +10,10 @@ export const PrevMonth = ({ className = "", children }) => {
       onClick={() => {
         handleMonthUpdate(moment(month).subtract(1, "month").toDate());
       }}
+      onKeyPress={() => {
+        handleMonthUpdate(moment(month).subtract(1, "month").toDate());
+      }}
+      tabIndex={0}
     >
       {children}
     </button>
