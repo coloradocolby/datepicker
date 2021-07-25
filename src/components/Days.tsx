@@ -2,8 +2,8 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDatepicker } from "../context/datepicker.context";
 
-export const Days = ({ className = "" }) => {
-  const { month, dayOffset, handleSelectedDate, selectedDate } =
+export const Days = ({ children }) => {
+  const { month, dayOffset, handleSelectedDate, selectedDate, min, max } =
     useDatepicker();
 
   const [cells, setCells] = useState<any>([]);
@@ -24,10 +24,14 @@ export const Days = ({ className = "" }) => {
           display: daysInLastMonth - offset + idx + 1,
         };
       } else if (idx - offset < daysInMonth) {
+        const date = moment(month)
+          .add(idx - offset, "days")
+          .toDate();
         return {
-          value: moment(month)
-            .add(idx - offset, "days")
-            .toDate(),
+          value:
+            moment(date).isAfter(min) && moment(date).isBefore(max)
+              ? date
+              : null,
           display: idx + 1 - offset,
         };
       } else {
@@ -47,10 +51,6 @@ export const Days = ({ className = "" }) => {
         cells.map(({ value, display }, idx) => (
           <div
             key={idx}
-            className={`${className} ${!value && "opacity-10"} ${
-              moment(value).isSame(moment(selectedDate), "day") &&
-              "bg-gray-400 hover:bg-gray-400"
-            }`}
             onClick={() => {
               if (value) {
                 handleSelectedDate(value);
@@ -61,9 +61,13 @@ export const Days = ({ className = "" }) => {
                 handleSelectedDate(value);
               }
             }}
-            tabIndex={value ? 0 : -1}
           >
-            {display}
+            {children({
+              activeInMonth: !!value,
+              display,
+              selectedDay: moment(value).isSame(moment(selectedDate), "day"),
+              value,
+            })}
           </div>
         ))}
     </div>

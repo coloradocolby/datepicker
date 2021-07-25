@@ -5,75 +5,135 @@ import { DatepickerContainer } from "./components/DatepickerContainer";
 import { DatepickerInput } from "./components/DatepickerInput";
 import { Days } from "./components/Days";
 import { DaysOfWeek } from "./components/DaysOfWeek";
-import { MonthYearLabel } from "./components/MonthYearLabel";
+import { MonthYear } from "./components/MonthYear";
 import { NextMonth } from "./components/NextMonth";
 import { PrevMonth } from "./components/PrevMonth";
 import { ReturnToToday } from "./components/ReturnToToday";
 import { DatepickerProvider } from "./context/datepicker.context";
-
+import { classNames } from "./utils/helpers";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/solid";
+import { VIEW_TYPES } from "./models/view_types";
+import { MonthYearSelect } from "./components/MonthYearSelect";
+import { YearMonthSelect } from "./components/YearMonthSelect";
 export const App = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const datepickerContainerRef = useRef(null);
   return (
-    <DatepickerProvider>
-      <div className="flex flex-col items-center justify-start w-screen h-screen select-none">
-        <div className="w-full max-w-md" ref={datepickerContainerRef}>
-          <div className="w-full">
-            <label htmlFor="firstName" className="text-xs font-medium">
-              Name
+    <div className="flex flex-col items-center justify-start w-screen h-screen bg-gray-100 select-none">
+      <div className="w-full max-w-sm">
+        <div className="w-full">
+          <label htmlFor="firstName" className="text-xs font-semibold">
+            Name
+          </label>
+          <input
+            id="firstName"
+            type="date"
+            className="w-full px-2 py-1 mb-2 border-2 border-gray-100 rounded-md outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
+          />
+        </div>
+
+        <div className="relative w-full" ref={datepickerContainerRef}>
+          <div>
+            <label htmlFor="birthday" className="text-xs font-semibold">
+              Birthday
             </label>
-            <input
-              id="firstName"
-              type="text"
-              className="w-full px-2 py-1 mb-2 bg-gray-100 rounded-md shadow-sm outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-300"
-            />
           </div>
-          <div className="relative w-full">
-            <div>
-              <label htmlFor="birthday" className="text-xs font-medium">
-                Birthday
-              </label>
-            </div>
+          <DatepickerProvider
+            min={new Date("0001-01-23")}
+            max={new Date("3000-08-10")}
+          >
             <DatepickerContainer
               onChange={setSelectedDate}
               constainerRef={datepickerContainerRef}
             >
               <DatepickerInput
                 id="birthday"
-                className="w-full px-2 py-1 mb-2 bg-gray-100 rounded-md shadow-sm outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-300"
+                className="w-full px-2 py-1 mb-2 border-2 border-gray-100 rounded-md outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
               />
-              <Datepicker className="absolute left-0 flex flex-col items-center w-full p-3 bg-gray-200 border-2 border-gray-100 rounded-md shadow-sm top-16">
-                <div className="flex justify-between w-full">
-                  <PrevMonth className="text-xs m-0.5 bg-gray-100 hover:bg-gray-300 rounded px-4 mt-3">
-                    ←
-                  </PrevMonth>
-                  <MonthYearLabel className="mb-4 font-medium cursor-pointer" />
-                  <NextMonth className="text-xs m-0.5 bg-gray-100 hover:bg-gray-300 rounded px-4 mt-3">
-                    →
-                  </NextMonth>
-                </div>
+              <Datepicker className="absolute left-0 flex flex-col items-center w-full bg-white border-2 border-gray-100 rounded-md top-18">
+                {({ view }) => (
+                  <>
+                    {view === VIEW_TYPES.DAYS && (
+                      <>
+                        <div className="flex items-center justify-between w-full px-3 pt-1">
+                          <div className="flex">
+                            <MonthYear className="py-0.5 px-1 m-1 text-xl font-semibold rounded cursor-pointer hover:bg-gray-100" />
+                          </div>
+                          <div>
+                            <PrevMonth className="text-xs mr-1 bg-gray-100 hover:bg-gray-200 rounded px-1 py-0.5">
+                              <ChevronLeftIcon className="w-4 h-4" />
+                            </PrevMonth>
+                            <NextMonth className="text-xs bg-gray-100 hover:bg-gray-200 rounded px-1 py-0.5">
+                              <ChevronRightIcon className="w-4 h-4" />
+                            </NextMonth>
+                          </div>
+                        </div>
+                        <div className="flex flex-col w-full px-3 pb-3">
+                          <DaysOfWeek className="my-2 font-semibold text-center" />
+                          <Days>
+                            {({
+                              activeInMonth,
+                              display,
+                              selectedDay,
+                              value,
+                            }) => (
+                              <div
+                                className={classNames(
+                                  "flex items-center justify-center p-1 m-0.5 rounded-md",
+                                  activeInMonth
+                                    ? "cursor-pointer outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
+                                    : "opacity-10",
+                                  selectedDay && "bg-gray-300",
+                                  activeInMonth &&
+                                    !selectedDay &&
+                                    "hover:bg-gray-200 active:bg-gray-300"
+                                )}
+                                tabIndex={value ? 0 : -1}
+                              >
+                                {display}
+                              </div>
+                            )}
+                          </Days>
+                          <ReturnToToday className="self-end font-semibold bg-gray-100 hover:bg-gray-200 rounded px-2 py-0.5 cursor-pointer" />
+                        </div>
+                      </>
+                    )}
 
-                <DaysOfWeek className="my-2 font-medium text-center" />
-                <Days className="flex items-center justify-center p-1 m-0.5 rounded-md cursor-pointer hover:bg-gray-300" />
-                <ReturnToToday className="self-end font-medium bg-gray-100 hover:bg-gray-300 rounded px-2 py-0.5 cursor-pointer" />
+                    {view === VIEW_TYPES.YEARS_MONTHS && (
+                      <>
+                        <div className="flex items-center justify-between w-full px-3 pt-1">
+                          <div className="flex">
+                            <MonthYear className="py-0.5 px-1 m-1 text-xl font-semibold rounded cursor-pointer hover:bg-gray-100" />
+                          </div>
+                        </div>
+
+                        <div className="w-full overflow-y-scroll max-h-96 scrollbar">
+                          <YearMonthSelect />
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
               </Datepicker>
             </DatepickerContainer>
-          </div>
-          <div className="w-full">
-            <label htmlFor="bio" className="text-xs font-medium">
-              Bio
-            </label>
-            <textarea
-              id="bio"
-              rows={10}
-              className="w-full px-2 py-1 mb-2 bg-gray-100 rounded-md shadow-sm outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-300"
-            />
-          </div>
+          </DatepickerProvider>
         </div>
-        <p className="mt-16 text-lg font-medium">
-          {moment(selectedDate).format("LLLL")}
-        </p>
+        <div className="w-full">
+          <label htmlFor="bio" className="text-xs font-semibold">
+            Bio
+          </label>
+          <textarea
+            id="bio"
+            rows={10}
+            className="w-full px-2 py-1 mb-2 border-2 border-gray-100 rounded-md outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
+          />
+        </div>
       </div>
-    </DatepickerProvider>
+    </div>
   );
 };
