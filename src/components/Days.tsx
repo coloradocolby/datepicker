@@ -50,7 +50,7 @@ export const Days = ({ children }) => {
       {cells &&
         cells.map(({ value, display }, idx) => (
           <div
-            key={idx}
+            key={`${moment(month).format("YYYY-MM")}-${idx + 1}`}
             onClick={() => {
               if (value) {
                 handleSelectedDate(value);

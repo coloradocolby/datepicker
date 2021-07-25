@@ -13,14 +13,15 @@ export const DatepickerInput = ({ className = "", id }) => {
 
   useEffect(() => {
     if (
-      !inputDate ||
-      !moment(inputDate).isValid ||
-      !moment(inputDate).isSame(selectedDate, "day")
+      selectedDate &&
+      (inputDate ||
+        !moment(inputDate).isValid ||
+        !moment(inputDate).isSame(selectedDate, "day"))
     ) {
       setInputDate(
         moment(selectedDate)
           // .utc()   cant decide if this works or not
-          .format("yyyy-MM-DD")
+          .format("MM/DD/YYYY")
       );
     }
   }, [selectedDate]);
@@ -30,7 +31,10 @@ export const DatepickerInput = ({ className = "", id }) => {
       id={id}
       className={className}
       onFocus={() => handleShowDatepicker(true)}
-      type="date"
+      type="text"
+      onBlur={() => {
+        setInputDate(moment(selectedDate).format("MM/DD/YYYY"));
+      }}
       onChange={(e) => {
         setInputDate(e.target.value);
         if (moment(e.target.value).isValid()) {

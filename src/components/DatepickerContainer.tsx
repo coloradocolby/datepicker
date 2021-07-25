@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import moment from "moment";
+import React, { useEffect } from "react";
 import { useDatepicker } from "../context/datepicker.context";
 import { useClickOutside } from "../hooks/useClickOutside";
 
@@ -18,5 +17,6 @@ export const DatepickerContainer = ({
   useEffect(() => {
     onChange(selectedDate);
   }, [selectedDate]);
+
   return <div className={className}>{children}</div>;
 };

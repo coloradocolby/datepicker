@@ -17,17 +17,7 @@ export const MonthYear = ({ className = "" }) => {
       }}
       tabIndex={0}
     >
-      <div className="flex items-center">
-        <span>{moment(month).format("MMMM YYYY")}</span>
-        {/* <div className="ml-1">
-          <ChevronRightIcon
-            className={classNames(
-              "w-4 h-4 transform",
-              view === VIEW_TYPES.MONTHS && "rotate-90"
-            )}
-          />
-        </div> */}
-      </div>
+      <span>{moment(month).format("MMMM YYYY")}</span>
     </div>
   );
 };

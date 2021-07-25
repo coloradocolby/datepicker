@@ -1,25 +1,20 @@
-import moment from "moment";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import React, { useRef, useState } from "react";
 import { Datepicker } from "./components/Datepicker";
 import { DatepickerContainer } from "./components/DatepickerContainer";
 import { DatepickerInput } from "./components/DatepickerInput";
 import { Days } from "./components/Days";
 import { DaysOfWeek } from "./components/DaysOfWeek";
+import { Months } from "./components/Months";
 import { MonthYear } from "./components/MonthYear";
 import { NextMonth } from "./components/NextMonth";
 import { PrevMonth } from "./components/PrevMonth";
-import { ReturnToToday } from "./components/ReturnToToday";
+import { Today } from "./components/Today";
+import { Years } from "./components/Years";
 import { DatepickerProvider } from "./context/datepicker.context";
-import { classNames } from "./utils/helpers";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronUpIcon,
-  ChevronDownIcon,
-} from "@heroicons/react/solid";
 import { VIEW_TYPES } from "./models/view_types";
-import { MonthYearSelect } from "./components/MonthYearSelect";
-import { YearMonthSelect } from "./components/YearMonthSelect";
+import { classNames } from "./utils/helpers";
+
 export const App = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const datepickerContainerRef = useRef(null);
@@ -32,11 +27,10 @@ export const App = () => {
           </label>
           <input
             id="firstName"
-            type="date"
+            type="text"
             className="w-full px-2 py-1 mb-2 border-2 border-gray-100 rounded-md outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
           />
         </div>
-
         <div className="relative w-full" ref={datepickerContainerRef}>
           <div>
             <label htmlFor="birthday" className="text-xs font-semibold">
@@ -99,7 +93,7 @@ export const App = () => {
                               </div>
                             )}
                           </Days>
-                          <ReturnToToday className="self-end font-semibold bg-gray-100 hover:bg-gray-200 rounded px-2 py-0.5 cursor-pointer" />
+                          <Today className="self-end font-semibold bg-gray-100 hover:bg-gray-200 rounded px-2 py-0.5 cursor-pointer" />
                         </div>
                       </>
                     )}
@@ -112,8 +106,15 @@ export const App = () => {
                           </div>
                         </div>
 
-                        <div className="w-full overflow-y-scroll max-h-96 scrollbar">
-                          <YearMonthSelect />
+                        <div className="w-full overflow-y-scroll text-lg max-h-64 scrollbar">
+                          <Years className="p-1 bg-gray-200 border-t border-b border-gray-300 cursor-pointer">
+                            {({ year }) => (
+                              <Months
+                                className="flex items-center justify-center p-1 m-2 rounded-md outline-none cursor-pointer focus:ring focus:ring-opacity-75 hover:bg-gray-200 active:bg-gray-300 focus:ring-blue-400"
+                                year={year}
+                              />
+                            )}
+                          </Years>
                         </div>
                       </>
                     )}

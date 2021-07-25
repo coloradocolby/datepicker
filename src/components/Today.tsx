@@ -3,17 +3,18 @@ import React from "react";
 
 import { useDatepicker } from "../context/datepicker.context";
 
-export const ReturnToToday = ({
+export const Today = ({
   className = "",
   children = "Today",
 }: {
-  className: string;
+  className?: string;
   children?: any;
 }) => {
   const { handleMonthUpdate, handleSelectedDate } = useDatepicker();
   return (
     <p
       className={className}
+      data-testid="today"
       tabIndex={0}
       onClick={() => {
         handleMonthUpdate(moment().startOf("month").toDate());
