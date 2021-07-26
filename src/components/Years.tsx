@@ -1,9 +1,9 @@
 import moment from "moment";
-import React, { useEffect, useLayoutEffect, useState, Fragment } from "react";
+import React, { Fragment, useEffect, useLayoutEffect, useState } from "react";
 import { useDatepicker } from "../context/datepicker.context";
 
 export const Years = ({ className = "", children }) => {
-  const { month, handleMonthUpdate, handleViewUpdate } = useDatepicker();
+  const { month } = useDatepicker();
   const [years, setYears] = useState([]);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [openYear, setOpenYear] = useState(

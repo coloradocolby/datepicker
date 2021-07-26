@@ -6,7 +6,7 @@ type DatepickerContextProps = {
   handleMonthUpdate: (date: Date) => void;
   handleSelectedDate: (date: Date) => void;
   handleShowDatepicker: (show: boolean) => void;
-  handleViewUpdate: (view: VIEW_TYPES) => void;
+  toggleView: () => void;
   min?: Date;
   max?: Date;
   month?: Date;
@@ -19,7 +19,7 @@ export const DatepickerContext = createContext<DatepickerContextProps>({
   handleMonthUpdate: () => {},
   handleSelectedDate: () => {},
   handleShowDatepicker: () => {},
-  handleViewUpdate: () => {},
+  toggleView: () => {},
   min: null,
   max: null,
   month: null,
@@ -60,7 +60,12 @@ export const DatepickerProvider = ({
 
   const handleShowDatepicker = (show: boolean) => setShow(show);
 
-  const handleViewUpdate = (view: VIEW_TYPES) => setView(view);
+  const toggleView = () =>
+    setView((view) =>
+      view === VIEW_TYPES.YEARS_MONTHS
+        ? VIEW_TYPES.DAYS
+        : VIEW_TYPES.YEARS_MONTHS
+    );
 
   return (
     <DatepickerContext.Provider
@@ -68,7 +73,7 @@ export const DatepickerProvider = ({
         handleMonthUpdate,
         handleSelectedDate,
         handleShowDatepicker,
-        handleViewUpdate,
+        toggleView,
         min,
         max,
         month,

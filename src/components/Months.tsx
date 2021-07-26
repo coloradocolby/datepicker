@@ -21,7 +21,7 @@ export const Months = ({
     "Dec",
   ],
 }) => {
-  const { handleMonthUpdate, handleViewUpdate } = useDatepicker();
+  const { handleMonthUpdate, toggleView } = useDatepicker();
   return (
     <>
       {months.map((month, idx) => (
@@ -30,7 +30,7 @@ export const Months = ({
           className={className}
           onClick={() => {
             handleMonthUpdate(moment(`${idx + 1}-01-${year}`).toDate());
-            handleViewUpdate(VIEW_TYPES.DAYS);
+            toggleView();
           }}
         >
           {month}
