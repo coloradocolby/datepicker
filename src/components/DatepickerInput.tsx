@@ -1,14 +1,16 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useDatepicker } from "../context/datepicker.context";
+import { useDatepicker } from "../hooks/useDatepicker";
+import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const DatepickerInput = ({ className = "", id }) => {
   const {
     selectedDate,
     handleShowDatepicker,
     handleSelectedDate,
+    show,
     handleMonthUpdate,
-  } = useDatepicker();
+  } = useDatepickerContext();
   const [inputDate, setInputDate] = useState("");
 
   useEffect(() => {
@@ -32,15 +34,26 @@ export const DatepickerInput = ({ className = "", id }) => {
       className={className}
       onFocus={() => handleShowDatepicker(true)}
       type="text"
+      onClick={() => {
+        if (!show) {
+          if (moment(inputDate).isValid()) {
+            setInputDate(moment(inputDate).format("MM/DD/YYYY"));
+            handleSelectedDate(moment(inputDate).toDate());
+            handleMonthUpdate(moment(inputDate).toDate());
+          }
+          handleShowDatepicker(true);
+        }
+      }}
       onBlur={() => {
-        setInputDate(moment(selectedDate).format("MM/DD/YYYY"));
+        if (moment(inputDate).isValid()) {
+          setInputDate(moment(inputDate).format("MM/DD/YYYY"));
+          handleSelectedDate(moment(inputDate).toDate());
+          handleMonthUpdate(moment(inputDate).toDate());
+        }
       }}
       onChange={(e) => {
+        handleShowDatepicker(false);
         setInputDate(e.target.value);
-        if (moment(e.target.value).isValid()) {
-          handleSelectedDate(moment(e.target.value).toDate());
-          handleMonthUpdate(moment(e.target.value).toDate());
-        }
       }}
       value={inputDate}
     />

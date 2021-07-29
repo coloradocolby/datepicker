@@ -5,19 +5,25 @@ import { DatepickerContainer } from "./components/DatepickerContainer";
 import { DatepickerInput } from "./components/DatepickerInput";
 import { Days } from "./components/Days";
 import { DaysOfWeek } from "./components/DaysOfWeek";
+import { Month } from "./components/Month";
 import { Months } from "./components/Months";
 import { MonthYear } from "./components/MonthYear";
 import { NextMonth } from "./components/NextMonth";
 import { PrevMonth } from "./components/PrevMonth";
 import { Today } from "./components/Today";
 import { Years } from "./components/Years";
-import { DatepickerProvider } from "./context/datepicker.context";
-import { VIEW_TYPES } from "./models/view_types";
+import { useDatepicker } from "./hooks/useDatepicker";
+import { DatepickerProvider } from "./hooks/useDatepickerContext";
 import { classNames } from "./utils/helpers";
 
 export const App = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const datepickerContainerRef = useRef(null);
+  const methods = useDatepicker({
+    min: new Date("0001-01-23"),
+    max: new Date("3000-08-10"),
+  });
+
   return (
     <div className="flex flex-col items-center justify-start w-screen h-screen bg-gray-100 select-none">
       <div className="w-full max-w-sm">
@@ -37,10 +43,8 @@ export const App = () => {
               Birthday
             </label>
           </div>
-          <DatepickerProvider
-            min={new Date("0001-01-23")}
-            max={new Date("3000-08-10")}
-          >
+
+          <DatepickerProvider {...methods}>
             <DatepickerContainer
               onChange={setSelectedDate}
               constainerRef={datepickerContainerRef}
@@ -52,7 +56,7 @@ export const App = () => {
               <Datepicker className="absolute left-0 flex flex-col items-center w-full bg-white border-2 border-gray-100 rounded-md top-18">
                 {({ view }) => (
                   <>
-                    {view === VIEW_TYPES.DAYS && (
+                    {view === "DAYS" && (
                       <>
                         <div className="flex items-center justify-between w-full px-3 pt-1">
                           <div className="flex">
@@ -98,7 +102,7 @@ export const App = () => {
                       </>
                     )}
 
-                    {view === VIEW_TYPES.YEARS_MONTHS && (
+                    {view === "YEARS_MONTHS" && (
                       <>
                         <div className="flex items-center justify-between w-full px-3 pt-1">
                           <div className="flex">
@@ -106,13 +110,22 @@ export const App = () => {
                           </div>
                         </div>
 
-                        <div className="w-full overflow-y-scroll text-lg max-h-64 scrollbar">
+                        <div className="w-full overflow-y-scroll text-lg max-h-64">
                           <Years className="p-1 bg-gray-200 border-t border-b border-gray-300 cursor-pointer">
                             {({ year }) => (
-                              <Months
-                                className="flex items-center justify-center p-1 m-2 rounded-md outline-none cursor-pointer focus:ring focus:ring-opacity-75 hover:bg-gray-200 active:bg-gray-300 focus:ring-blue-400"
-                                year={year}
-                              />
+                              <Months year={year}>
+                                {({ display, value, isActiveMonth }) => (
+                                  <Month
+                                    value={value}
+                                    className={classNames(
+                                      `flex items-center justify-center p-1 m-2 rounded-md outline-none cursor-pointer focus:ring focus:ring-opacity-75 hover:bg-gray-200 active:bg-gray-300 focus:ring-blue-400`,
+                                      isActiveMonth && "bg-gray-400"
+                                    )}
+                                  >
+                                    {display}
+                                  </Month>
+                                )}
+                              </Months>
                             )}
                           </Years>
                         </div>

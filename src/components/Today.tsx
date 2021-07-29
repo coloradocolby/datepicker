@@ -1,7 +1,6 @@
 import moment from "moment";
 import React from "react";
-
-import { useDatepicker } from "../context/datepicker.context";
+import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const Today = ({
   className = "",
@@ -10,7 +9,7 @@ export const Today = ({
   className?: string;
   children?: any;
 }) => {
-  const { handleMonthUpdate, handleSelectedDate } = useDatepicker();
+  const { handleMonthUpdate, handleSelectedDate } = useDatepickerContext();
   return (
     <p
       className={className}

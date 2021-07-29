@@ -1,9 +1,9 @@
 import moment from "moment";
 import React, { Fragment, useEffect, useLayoutEffect, useState } from "react";
-import { useDatepicker } from "../context/datepicker.context";
+import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const Years = ({ className = "", children }) => {
-  const { month } = useDatepicker();
+  const { month } = useDatepickerContext();
   const [years, setYears] = useState([]);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [openYear, setOpenYear] = useState(
@@ -15,7 +15,7 @@ export const Years = ({ className = "", children }) => {
       `year-${moment(month).format("YYYY")}`
     );
     if (elem && !hasScrolled) {
-      elem.scrollIntoView();
+      elem?.scrollIntoView?.();
       setHasScrolled(true);
     }
   });

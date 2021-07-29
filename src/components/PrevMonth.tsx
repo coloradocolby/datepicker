@@ -1,6 +1,6 @@
 import moment from "moment";
 import React from "react";
-import { useDatepicker } from "../context/datepicker.context";
+import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const PrevMonth = ({
   className = "",
@@ -9,7 +9,7 @@ export const PrevMonth = ({
   className?: string;
   children?: any;
 }) => {
-  const { month, handleMonthUpdate } = useDatepicker();
+  const { month, handleMonthUpdate } = useDatepickerContext();
   return (
     <button
       data-testid="prev-month"

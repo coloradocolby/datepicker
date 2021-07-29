@@ -1,7 +1,5 @@
 import { render } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import React from "react";
-import { VIEW_TYPES } from "../models/view_types";
 import { DaysOfWeek } from "./DaysOfWeek";
 
 const setup = ({ days }) => {

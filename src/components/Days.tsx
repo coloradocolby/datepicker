@@ -1,10 +1,10 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useDatepicker } from "../context/datepicker.context";
+import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const Days = ({ children }) => {
   const { month, dayOffset, handleSelectedDate, selectedDate, min, max } =
-    useDatepicker();
+    useDatepickerContext();
 
   const [cells, setCells] = useState<any>([]);
 

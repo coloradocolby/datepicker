@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { useDatepicker } from "../context/datepicker.context";
 import { useClickOutside } from "../hooks/useClickOutside";
+import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const DatepickerContainer = ({
   className = "",
@@ -8,7 +8,7 @@ export const DatepickerContainer = ({
   onChange,
   children,
 }) => {
-  const { selectedDate, handleShowDatepicker } = useDatepicker();
+  const { selectedDate, handleShowDatepicker } = useDatepickerContext();
 
   useClickOutside(constainerRef, () => {
     handleShowDatepicker(false);

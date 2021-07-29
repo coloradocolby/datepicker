@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { NextMonth } from "./NextMonth";
-import { DatepickerContext } from "../context/datepicker.context";
+import { DatepickerProvider } from "../hooks/useDatepickerContext";
 import userEvent from "@testing-library/user-event";
 import moment from "moment";
 
@@ -10,15 +10,15 @@ const setup = () => {
   const month = new Date();
 
   const utils = render(
-    <DatepickerContext.Provider
-      // @ts-ignore
-      value={{
+    // @ts-ignore
+    <DatepickerProvider
+      {...{
         handleMonthUpdate,
         month,
       }}
     >
       <NextMonth />
-    </DatepickerContext.Provider>
+    </DatepickerProvider>
   );
 
   return {

@@ -1,8 +1,8 @@
 import React from "react";
-import { useDatepicker } from "../context/datepicker.context";
+import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const Datepicker = ({ className = "", children }) => {
-  const { show, view } = useDatepicker();
+  const { show, view } = useDatepickerContext();
 
   return show ? (
     <div className={className}>

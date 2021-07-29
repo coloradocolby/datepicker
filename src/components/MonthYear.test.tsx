@@ -1,24 +1,23 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { MonthYear } from "./MonthYear";
-import { DatepickerContext } from "../context/datepicker.context";
+import { DatepickerProvider } from "../hooks/useDatepickerContext";
 import userEvent from "@testing-library/user-event";
 import moment from "moment";
-import { VIEW_TYPES } from "../models/view_types";
 
 const setup = ({ month, view }) => {
   const toggleView = jest.fn();
   const utils = render(
-    <DatepickerContext.Provider
-      // @ts-ignore
-      value={{
+    // @ts-ignore
+    <DatepickerProvider
+      {...{
         toggleView,
         month,
         view,
       }}
     >
       <MonthYear />
-    </DatepickerContext.Provider>
+    </DatepickerProvider>
   );
 
   return {
@@ -31,7 +30,7 @@ const setup = ({ month, view }) => {
 test("responds to click event", () => {
   const { toggleView, getByText } = setup({
     month: new Date("06-16-1994"),
-    view: VIEW_TYPES.DAYS,
+    view: "DAYS",
   });
 
   const label = getByText(/june 1994/i);
@@ -44,7 +43,7 @@ test("responds to click event", () => {
 test("responds to tab and keydown event", () => {
   const { toggleView, getByText, getByTestId } = setup({
     month: new Date("09-09-2000"),
-    view: VIEW_TYPES.YEARS_MONTHS,
+    view: "YEARS_MONTHS",
   });
 
   expect(getByText(/september 2000/i)).toBeInTheDocument();

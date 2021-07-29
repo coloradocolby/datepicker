@@ -1,4 +1,0 @@
-export enum VIEW_TYPES {
-  DAYS = "DAYS",
-  YEARS_MONTHS = "YEARS_MONTHS",
-}
