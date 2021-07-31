@@ -11,13 +11,13 @@ export const Month = ({
   value: number;
   className?: string;
 }) => {
-  const { handleMonthUpdate, toggleView } = useDatepickerContext();
+  const { handleCalendarUpdate, toggleView } = useDatepickerContext();
 
   return (
     <div
       className={className}
       onClick={() => {
-        handleMonthUpdate(moment(value, "MM-DD-YYYY").toDate());
+        handleCalendarUpdate(moment(value, "MM-DD-YYYY").toDate());
         toggleView();
       }}
     >

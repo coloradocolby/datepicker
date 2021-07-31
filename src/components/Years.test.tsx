@@ -11,14 +11,14 @@ import { Years } from "./Years";
 
 const setup = () => {
   const toggleView = jest.fn();
-  const handleMonthUpdate = jest.fn();
+  const handleCalendarUpdate = jest.fn();
   const view = "YEARS_MONTHS";
   const utils = render(
     // @ts-ignore
     <DatepickerProvider
       {...{
         toggleView,
-        handleMonthUpdate,
+        handleCalendarUpdate,
         view,
         min: new Date("01-01-1900"),
         max: new Date("01-01-2100"),
@@ -44,12 +44,12 @@ const setup = () => {
   return {
     ...utils,
     toggleView,
-    handleMonthUpdate,
+    handleCalendarUpdate,
   };
 };
 
 test("renders correctly", () => {
-  const { getByText, toggleView, handleMonthUpdate } = setup();
+  const { getByText, toggleView, handleCalendarUpdate } = setup();
 
   const jan = getByText(/jan/i);
   expect(jan).toBeInTheDocument();
@@ -68,7 +68,7 @@ test("renders correctly", () => {
   userEvent.click(jan);
 
   expect(toggleView).toHaveBeenCalled();
-  expect(handleMonthUpdate).toHaveBeenCalledWith(
+  expect(handleCalendarUpdate).toHaveBeenCalledWith(
     moment("Jan-01-2021", "MMM-DD-YYYY").toDate()
   );
 });

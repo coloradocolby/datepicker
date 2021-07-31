@@ -1,13 +1,14 @@
 export type UseDatepickerReturn = {
-  handleMonthUpdate: (date: Date) => void;
+  handleCalendarUpdate: (date: Date) => void;
   handleSelectedDate: (date: Date) => void;
   handleShowDatepicker: (show: boolean) => void;
   toggleView: () => void;
-  min?: Date;
-  max?: Date;
-  month?: Date;
+  minDate?: Date;
+  maxDate?: Date;
+  calendarStart: Date;
+  calendarEnd: Date;
   show: boolean;
   selectedDate: Date;
-  dayOffset: number;
+  monthsDisplayed: Date[];
   view: "DAYS" | "YEARS_MONTHS";
 };

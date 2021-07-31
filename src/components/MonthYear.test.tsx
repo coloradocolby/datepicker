@@ -12,11 +12,10 @@ const setup = ({ month, view }) => {
     <DatepickerProvider
       {...{
         toggleView,
-        month,
         view,
       }}
     >
-      <MonthYear />
+      <MonthYear month={month} />
     </DatepickerProvider>
   );
 

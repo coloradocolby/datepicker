@@ -24,7 +24,7 @@ export const Months = ({
   year: number;
   months?: { display: string; value: string }[];
 }) => {
-  const { month: _month } = useDatepickerContext();
+  const { calendarStart } = useDatepickerContext();
   return (
     <>
       {months.map((month) => (
@@ -34,7 +34,7 @@ export const Months = ({
             isActiveMonth: moment(
               `${month.value}-01-${year}`,
               "MM-DD-YYYY"
-            ).isSame(_month, "month"),
+            ).isSame(calendarStart, "month"),
           })}
         </Fragment>
       ))}

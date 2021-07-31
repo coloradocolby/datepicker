@@ -1,5 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import moment from "moment";
 import React, { useRef, useState } from "react";
+import { Calendar } from "./components/Calendar";
 import { Datepicker } from "./components/Datepicker";
 import { DatepickerContainer } from "./components/DatepickerContainer";
 import { DatepickerInput } from "./components/DatepickerInput";
@@ -20,13 +22,15 @@ export const App = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const datepickerContainerRef = useRef(null);
   const methods = useDatepicker({
-    min: new Date("0001-01-23"),
-    max: new Date("3000-08-10"),
+    minDate: new Date("0001-01-23"),
+    maxDate: new Date("3000-08-10"),
+    calendarStart: moment(new Date()).startOf("month").toDate(),
+    monthsToDisplay: 2,
   });
 
   return (
     <div className="flex flex-col items-center justify-start w-screen h-screen bg-gray-100 select-none">
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-3xl">
         <div className="w-full">
           <label htmlFor="firstName" className="text-xs font-semibold">
             Name
@@ -57,11 +61,49 @@ export const App = () => {
                 {({ view }) => (
                   <>
                     {view === "DAYS" && (
-                      <>
-                        <div className="flex items-center justify-between w-full px-3 pt-1">
-                          <div className="flex">
-                            <MonthYear className="py-0.5 px-1 m-1 text-xl font-semibold rounded cursor-pointer hover:bg-gray-100" />
-                          </div>
+                      <div className="relative w-full">
+                        <Calendar className="grid w-full grid-cols-1 md:grid-cols-2">
+                          {({ month }) => (
+                            <div className="w-full">
+                              <div className="flex items-center justify-between w-full px-3 pt-1">
+                                <div className="flex">
+                                  <MonthYear
+                                    className="py-0.5 px-1 m-1 text-xl font-semibold rounded cursor-pointer hover:bg-gray-100"
+                                    month={month}
+                                  />
+                                </div>
+                              </div>
+                              <div className="flex flex-col w-full px-3 pb-3">
+                                <DaysOfWeek className="my-2 font-semibold text-center" />
+                                <Days month={month}>
+                                  {({
+                                    activeInMonth,
+                                    display,
+                                    selectedDay,
+                                    value,
+                                  }) => (
+                                    <div
+                                      className={classNames(
+                                        "flex items-center justify-center p-1 m-0.5 rounded-md",
+                                        activeInMonth
+                                          ? "cursor-pointer outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
+                                          : "opacity-10",
+                                        selectedDay && "bg-gray-300",
+                                        activeInMonth &&
+                                          !selectedDay &&
+                                          "hover:bg-gray-200 active:bg-gray-300"
+                                      )}
+                                      tabIndex={value ? 0 : -1}
+                                    >
+                                      {display}
+                                    </div>
+                                  )}
+                                </Days>
+                              </div>
+                            </div>
+                          )}
+                        </Calendar>
+                        <div className="absolute top-2 right-2">
                           <div>
                             <PrevMonth className="text-xs mr-1 bg-gray-100 hover:bg-gray-200 rounded px-1 py-0.5">
                               <ChevronLeftIcon className="w-4 h-4" />
@@ -70,43 +112,16 @@ export const App = () => {
                               <ChevronRightIcon className="w-4 h-4" />
                             </NextMonth>
                           </div>
+                          {/* <Today className="self-end font-semibold bg-gray-100 hover:bg-gray-200 rounded px-2 py-0.5 cursor-pointer" /> */}
                         </div>
-                        <div className="flex flex-col w-full px-3 pb-3">
-                          <DaysOfWeek className="my-2 font-semibold text-center" />
-                          <Days>
-                            {({
-                              activeInMonth,
-                              display,
-                              selectedDay,
-                              value,
-                            }) => (
-                              <div
-                                className={classNames(
-                                  "flex items-center justify-center p-1 m-0.5 rounded-md",
-                                  activeInMonth
-                                    ? "cursor-pointer outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
-                                    : "opacity-10",
-                                  selectedDay && "bg-gray-300",
-                                  activeInMonth &&
-                                    !selectedDay &&
-                                    "hover:bg-gray-200 active:bg-gray-300"
-                                )}
-                                tabIndex={value ? 0 : -1}
-                              >
-                                {display}
-                              </div>
-                            )}
-                          </Days>
-                          <Today className="self-end font-semibold bg-gray-100 hover:bg-gray-200 rounded px-2 py-0.5 cursor-pointer" />
-                        </div>
-                      </>
+                      </div>
                     )}
 
                     {view === "YEARS_MONTHS" && (
                       <>
-                        <div className="flex items-center justify-between w-full px-3 pt-1">
+                        <div className="flex items-center justify-between w-full px-3">
                           <div className="flex">
-                            <MonthYear className="py-0.5 px-1 m-1 text-xl font-semibold rounded cursor-pointer hover:bg-gray-100" />
+                            {/* <MonthYear className="py-0.5 px-1 m-1 text-xl font-semibold rounded cursor-pointer hover:bg-gray-100" /> */}
                           </div>
                         </div>
 

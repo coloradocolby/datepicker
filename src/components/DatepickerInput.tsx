@@ -9,7 +9,7 @@ export const DatepickerInput = ({ className = "", id }) => {
     handleShowDatepicker,
     handleSelectedDate,
     show,
-    handleMonthUpdate,
+    handleCalendarUpdate,
   } = useDatepickerContext();
   const [inputDate, setInputDate] = useState("");
 
@@ -39,7 +39,7 @@ export const DatepickerInput = ({ className = "", id }) => {
           if (moment(inputDate).isValid()) {
             setInputDate(moment(inputDate).format("MM/DD/YYYY"));
             handleSelectedDate(moment(inputDate).toDate());
-            handleMonthUpdate(moment(inputDate).toDate());
+            handleCalendarUpdate(moment(inputDate).toDate());
           }
           handleShowDatepicker(true);
         }
@@ -48,7 +48,7 @@ export const DatepickerInput = ({ className = "", id }) => {
         if (moment(inputDate).isValid()) {
           setInputDate(moment(inputDate).format("MM/DD/YYYY"));
           handleSelectedDate(moment(inputDate).toDate());
-          handleMonthUpdate(moment(inputDate).toDate());
+          handleCalendarUpdate(moment(inputDate).toDate());
         }
       }}
       onChange={(e) => {

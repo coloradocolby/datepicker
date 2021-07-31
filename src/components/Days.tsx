@@ -2,13 +2,14 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
-export const Days = ({ children }) => {
-  const { month, dayOffset, handleSelectedDate, selectedDate, min, max } =
+export const Days = ({ children, month }) => {
+  const { handleSelectedDate, selectedDate, minDate, maxDate } =
     useDatepickerContext();
 
   const [cells, setCells] = useState<any>([]);
 
   useEffect(() => {
+    const dayOffset = moment(month).startOf("month").isoWeekday();
     const daysInMonth = moment(month).utc().daysInMonth();
     const daysInLastMonth = moment(month).subtract(1, "month").daysInMonth();
     let cells =
@@ -29,7 +30,7 @@ export const Days = ({ children }) => {
           .toDate();
         return {
           value:
-            moment(date).isAfter(min) && moment(date).isBefore(max)
+            moment(date).isAfter(minDate) && moment(date).isBefore(maxDate)
               ? date
               : null,
           display: idx + 1 - offset,
@@ -43,7 +44,7 @@ export const Days = ({ children }) => {
     });
 
     setCells(cells);
-  }, [dayOffset, month]);
+  }, [month]);
 
   return (
     <div className="grid w-full grid-cols-7">

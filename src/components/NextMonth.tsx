@@ -9,16 +9,16 @@ export const NextMonth = ({
   className?: string;
   children?: any;
 }) => {
-  const { month, handleMonthUpdate } = useDatepickerContext();
+  const { calendarStart, handleCalendarUpdate } = useDatepickerContext();
   return (
     <button
       data-testid="next-month"
       className={className}
       onClick={() => {
-        handleMonthUpdate(moment(month).add(1, "month").toDate());
+        handleCalendarUpdate(moment(calendarStart).add(1, "month").toDate());
       }}
       onKeyPress={() => {
-        handleMonthUpdate(moment(month).add(1, "month").toDate());
+        handleCalendarUpdate(moment(calendarStart).add(1, "month").toDate());
       }}
       tabIndex={0}
     >

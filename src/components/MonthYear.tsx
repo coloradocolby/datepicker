@@ -2,8 +2,8 @@ import moment from "moment";
 import React from "react";
 import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
-export const MonthYear = ({ className = "" }) => {
-  const { month, toggleView } = useDatepickerContext();
+export const MonthYear = ({ className = "", month }) => {
+  const { toggleView } = useDatepickerContext();
   return (
     <div
       data-testid="month-year"

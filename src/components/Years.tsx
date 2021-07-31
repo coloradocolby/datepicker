@@ -3,16 +3,16 @@ import React, { Fragment, useEffect, useLayoutEffect, useState } from "react";
 import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const Years = ({ className = "", children }) => {
-  const { month } = useDatepickerContext();
+  const { calendarStart } = useDatepickerContext();
   const [years, setYears] = useState([]);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [openYear, setOpenYear] = useState(
-    Number(moment(month).format("YYYY"))
+    Number(moment(calendarStart).format("YYYY"))
   );
 
   useLayoutEffect(() => {
     const elem = document.getElementById(
-      `year-${moment(month).format("YYYY")}`
+      `year-${moment(calendarStart).format("YYYY")}`
     );
     if (elem && !hasScrolled) {
       elem?.scrollIntoView?.();

@@ -1,42 +1,45 @@
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { useEffect, useState } from "react";
-
-type Datepicker = {
-  handleMonthUpdate: (date: Date) => void;
-  handleSelectedDate: (date: Date) => void;
-  handleShowDatepicker: (show: boolean) => void;
-  toggleView: () => void;
-  min?: Date;
-  max?: Date;
-  month?: Date;
-  show: boolean;
-  selectedDate: Date;
-  dayOffset: number;
-  view: "DAYS" | "YEARS_MONTHS";
-};
+import { UseDatepickerReturn } from "../types/UseDatepickerReturn";
 
 export const useDatepicker = ({
-  min: _min,
-  max: _max,
+  minDate,
+  maxDate,
+  calendarStart: calStart,
+  monthsToDisplay = 1,
 }: {
-  min: Date;
-  max: Date;
+  minDate: Date;
+  maxDate: Date;
+  calendarStart: Date;
+  monthsToDisplay?: number;
 }) => {
-  const [min] = useState<Date>(_min);
-  const [max] = useState<Date>(_max);
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [month, setMonth] = useState<Date>(moment().startOf("month").toDate());
+  const [calendarStart, setCalendarStart] = useState<Date>(
+    moment(calStart).startOf("month").toDate()
+  );
+
   const [dayOffset, setDayOffset] = useState<number>();
   const [show, setShow] = useState<boolean>(false);
 
   const [view, setView] = useState<"DAYS" | "YEARS_MONTHS">("DAYS");
 
-  useEffect(() => {
-    setDayOffset(moment(month).startOf("month").isoWeekday());
-  }, [month]);
+  const [monthsDisplayed, setMonthsDisplayed] = useState<Date[]>([]);
 
-  const handleMonthUpdate = (date: Date) =>
-    setMonth(moment(date).startOf("month").toDate());
+  useEffect(() => {
+    let arr = [];
+    let temp = calendarStart;
+
+    for (let i = 0; i < monthsToDisplay; i++) {
+      arr.push(moment(temp).toDate());
+      temp = moment(temp).add(1, "month").toDate();
+    }
+
+    setMonthsDisplayed(arr);
+  }, [calendarStart, monthsToDisplay]);
+
+  const handleCalendarUpdate = (date: Date) => {
+    setCalendarStart(moment(date).startOf("month").toDate());
+  };
 
   const handleSelectedDate = (date: Date) => setSelectedDate(date);
 
@@ -46,16 +49,16 @@ export const useDatepicker = ({
     setView((view) => (view === "YEARS_MONTHS" ? "DAYS" : "YEARS_MONTHS"));
 
   return {
-    handleMonthUpdate,
+    handleCalendarUpdate,
     handleSelectedDate,
     handleShowDatepicker,
     toggleView,
-    min,
-    max,
-    month,
+    minDate,
+    maxDate,
+    calendarStart,
+    monthsDisplayed,
     show,
     selectedDate,
-    dayOffset,
     view,
-  } as Datepicker;
+  } as UseDatepickerReturn;
 };

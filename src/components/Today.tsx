@@ -9,18 +9,18 @@ export const Today = ({
   className?: string;
   children?: any;
 }) => {
-  const { handleMonthUpdate, handleSelectedDate } = useDatepickerContext();
+  const { handleCalendarUpdate, handleSelectedDate } = useDatepickerContext();
   return (
     <p
       className={className}
       data-testid="today"
       tabIndex={0}
       onClick={() => {
-        handleMonthUpdate(moment().startOf("month").toDate());
+        handleCalendarUpdate(moment().startOf("month").toDate());
         handleSelectedDate(moment().toDate());
       }}
       onKeyPress={() => {
-        handleMonthUpdate(moment().startOf("month").toDate());
+        handleCalendarUpdate(moment().startOf("month").toDate());
         handleSelectedDate(moment().toDate());
       }}
     >

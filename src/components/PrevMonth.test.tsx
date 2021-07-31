@@ -6,15 +6,15 @@ import userEvent from "@testing-library/user-event";
 import moment from "moment";
 
 const setup = () => {
-  const handleMonthUpdate = jest.fn();
-  const month = new Date();
+  const handleCalendarUpdate = jest.fn();
+  const calendarStart = new Date();
 
   const utils = render(
     // @ts-ignore
     <DatepickerProvider
       {...{
-        handleMonthUpdate,
-        month,
+        handleCalendarUpdate,
+        calendarStart,
       }}
     >
       <PrevMonth />
@@ -23,27 +23,27 @@ const setup = () => {
 
   return {
     ...utils,
-    handleMonthUpdate,
-    month,
+    handleCalendarUpdate,
+    calendarStart,
   };
 };
 
 test("responds to click event", () => {
-  const { getByTestId, handleMonthUpdate, month } = setup();
+  const { getByTestId, handleCalendarUpdate, calendarStart } = setup();
   userEvent.click(getByTestId("prev-month"));
 
-  expect(handleMonthUpdate).toHaveBeenCalledWith(
-    moment(month).subtract(1, "month").toDate()
+  expect(handleCalendarUpdate).toHaveBeenCalledWith(
+    moment(calendarStart).subtract(1, "month").toDate()
   );
 });
 
 test("responds to tab and keydown event", () => {
-  const { getByTestId, handleMonthUpdate, month } = setup();
+  const { getByTestId, handleCalendarUpdate, calendarStart } = setup();
   expect(document.body).toHaveFocus();
   userEvent.tab();
   expect(getByTestId("prev-month")).toHaveFocus();
   userEvent.keyboard("{enter}");
-  expect(handleMonthUpdate).toHaveBeenCalledWith(
-    moment(month).subtract(1, "month").toDate()
+  expect(handleCalendarUpdate).toHaveBeenCalledWith(
+    moment(calendarStart).subtract(1, "month").toDate()
   );
 });
