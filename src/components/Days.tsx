@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const Days = ({ children, month }) => {
-  const { handleSelectedDate, selectedDate, minDate, maxDate } =
+  const { handleSelectedDate, handleHoverDate, minDate, maxDate } =
     useDatepickerContext();
 
   const [cells, setCells] = useState<any>([]);
@@ -53,20 +53,18 @@ export const Days = ({ children, month }) => {
           <div
             key={`${moment(month).format("YYYY-MM")}-${idx + 1}`}
             onClick={() => {
-              if (value) {
-                handleSelectedDate(value);
-              }
+              value && handleSelectedDate(value);
             }}
             onKeyPress={() => {
-              if (value) {
-                handleSelectedDate(value);
-              }
+              value && handleSelectedDate(value);
+            }}
+            onMouseEnter={() => {
+              value && handleHoverDate(value);
             }}
           >
             {children({
               activeInMonth: !!value,
               display,
-              selectedDay: moment(value).isSame(moment(selectedDate), "day"),
               value,
             })}
           </div>

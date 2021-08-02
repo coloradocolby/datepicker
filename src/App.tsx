@@ -25,12 +25,24 @@ export const App = () => {
     minDate: new Date("0001-01-23"),
     maxDate: new Date("3000-08-10"),
     calendarStart: moment(new Date()).startOf("month").toDate(),
-    monthsToDisplay: 2,
+    monthsToDisplay: 4,
+    range: true,
   });
 
   return (
-    <div className="flex flex-col items-center justify-start w-screen h-screen bg-gray-100 select-none">
+    <div className="flex flex-col items-center justify-start w-screen h-full min-h-screen bg-gray-100 select-none">
       <div className="w-full max-w-3xl">
+        <div className="w-full">
+          {/* <pre>
+            {JSON.stringify(
+              {
+                ...methods,
+              },
+              null,
+              2
+            )}
+          </pre> */}
+        </div>
         <div className="w-full">
           <label htmlFor="firstName" className="text-xs font-semibold">
             Name
@@ -43,8 +55,8 @@ export const App = () => {
         </div>
         <div className="relative w-full" ref={datepickerContainerRef}>
           <div>
-            <label htmlFor="birthday" className="text-xs font-semibold">
-              Birthday
+            <label htmlFor="dates" className="text-xs font-semibold">
+              Dates
             </label>
           </div>
 
@@ -54,7 +66,7 @@ export const App = () => {
               constainerRef={datepickerContainerRef}
             >
               <DatepickerInput
-                id="birthday"
+                id="dates"
                 className="w-full px-2 py-1 mb-2 border-2 border-gray-100 rounded-md outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
               />
               <Datepicker className="absolute left-0 flex flex-col items-center w-full bg-white border-2 border-gray-100 rounded-md top-18">
@@ -76,22 +88,41 @@ export const App = () => {
                               <div className="flex flex-col w-full px-3 pb-3">
                                 <DaysOfWeek className="my-2 font-semibold text-center" />
                                 <Days month={month}>
-                                  {({
-                                    activeInMonth,
-                                    display,
-                                    selectedDay,
-                                    value,
-                                  }) => (
+                                  {({ activeInMonth, display, value }) => (
                                     <div
                                       className={classNames(
                                         "flex items-center justify-center p-1 m-0.5 rounded-md",
                                         activeInMonth
-                                          ? "cursor-pointer outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
+                                          ? "cursor-pointer outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400 hover:ring hover:ring-opacity-75 hover:ring-blue-400"
                                           : "opacity-10",
-                                        selectedDay && "bg-gray-300",
-                                        activeInMonth &&
-                                          !selectedDay &&
-                                          "hover:bg-gray-200 active:bg-gray-300"
+                                        methods.date &&
+                                          moment(methods.date).isSame(
+                                            value,
+                                            "day"
+                                          ) &&
+                                          "bg-blue-200",
+
+                                        methods.dateRange &&
+                                          methods.dateRange.start &&
+                                          methods.dateRange.end &&
+                                          moment(value).isBetween(
+                                            methods.dateRange.start,
+                                            methods.dateRange.end,
+                                            "days",
+                                            "[]"
+                                          ) &&
+                                          "bg-blue-200",
+
+                                        methods.dateRange &&
+                                          methods.dateRange.start &&
+                                          !methods.dateRange.end &&
+                                          moment(value).isBetween(
+                                            methods.dateRange?.start,
+                                            methods.hoverDate,
+                                            "days",
+                                            "[]"
+                                          ) &&
+                                          "bg-blue-100"
                                       )}
                                       tabIndex={value ? 0 : -1}
                                     >

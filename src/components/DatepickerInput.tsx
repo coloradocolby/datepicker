@@ -5,7 +5,7 @@ import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const DatepickerInput = ({ className = "", id }) => {
   const {
-    selectedDate,
+    date,
     handleShowDatepicker,
     handleSelectedDate,
     show,
@@ -15,18 +15,18 @@ export const DatepickerInput = ({ className = "", id }) => {
 
   useEffect(() => {
     if (
-      selectedDate &&
+      date &&
       (inputDate ||
         !moment(inputDate).isValid ||
-        !moment(inputDate).isSame(selectedDate, "day"))
+        !moment(inputDate).isSame(date, "day"))
     ) {
       setInputDate(
-        moment(selectedDate)
+        moment(date)
           // .utc()   cant decide if this works or not
           .format("MM/DD/YYYY")
       );
     }
-  }, [selectedDate]);
+  }, [date]);
 
   return (
     <input

@@ -8,15 +8,15 @@ export const DatepickerContainer = ({
   onChange,
   children,
 }) => {
-  const { selectedDate, handleShowDatepicker } = useDatepickerContext();
+  const { date, handleShowDatepicker } = useDatepickerContext();
 
   useClickOutside(constainerRef, () => {
     handleShowDatepicker(false);
   });
 
   useEffect(() => {
-    onChange(selectedDate);
-  }, [selectedDate]);
+    onChange(date);
+  }, [date]);
 
   return <div className={className}>{children}</div>;
 };
