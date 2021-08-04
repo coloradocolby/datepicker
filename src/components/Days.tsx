@@ -3,8 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const Days = ({ children, month }) => {
-  const { handleSelectedDate, handleHoverDate, minDate, maxDate } =
-    useDatepickerContext();
+  const {
+    handleSelectedDate,
+    handleHoverDate,
+    handleFocusDate,
+    minDate,
+    maxDate,
+  } = useDatepickerContext();
 
   const [cells, setCells] = useState<any>([]);
 
@@ -12,10 +17,16 @@ export const Days = ({ children, month }) => {
     const dayOffset = moment(month).startOf("month").isoWeekday();
     const daysInMonth = moment(month).utc().daysInMonth();
     const daysInLastMonth = moment(month).subtract(1, "month").daysInMonth();
+    console.log(dayOffset);
     let cells =
       daysInMonth === 28 && dayOffset === 7
         ? new Array(28).fill(null)
+        : (daysInMonth === 31 && dayOffset >= 5) ||
+          (daysInMonth === 31 && dayOffset === 6)
+        ? new Array(42).fill(null)
         : new Array(35).fill(null);
+
+    // TODO ^^ this logic is not perfect!! find a better way to calculate the cells necessary
 
     cells = cells.map((_, idx) => {
       let offset = dayOffset % 7;

@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDatepickerContext } from "../hooks/useDatepickerContext";
 
 export const Calendar = ({ children, className }) => {
@@ -8,11 +8,11 @@ export const Calendar = ({ children, className }) => {
   return (
     <div className={className}>
       {monthsDisplayed.map((month) => (
-        <>
+        <Fragment key={month.toString()}>
           {children({
             month,
           })}
-        </>
+        </Fragment>
       ))}
     </div>
   );

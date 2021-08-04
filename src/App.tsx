@@ -25,7 +25,7 @@ export const App = () => {
     minDate: new Date("0001-01-23"),
     maxDate: new Date("3000-08-10"),
     calendarStart: moment(new Date()).startOf("month").toDate(),
-    monthsToDisplay: 4,
+    monthsToDisplay: 2,
     range: true,
   });
 
@@ -93,15 +93,33 @@ export const App = () => {
                                       className={classNames(
                                         "flex items-center justify-center p-1 m-0.5 rounded-md",
                                         activeInMonth
-                                          ? "cursor-pointer outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400 hover:ring hover:ring-opacity-75 hover:ring-blue-400"
+                                          ? "cursor-pointer outline-none focus:ring focus:ring-opacity-75 focus:ring-blue-400"
                                           : "opacity-10",
+                                        methods.hoverDate &&
+                                          !methods.focusedDate &&
+                                          moment(methods.hoverDate).isSame(
+                                            value,
+                                            "day"
+                                          ) &&
+                                          "ring ring-opacity-75 ring-blue-400",
+
                                         methods.date &&
                                           moment(methods.date).isSame(
                                             value,
                                             "day"
                                           ) &&
                                           "bg-blue-200",
-
+                                        methods.dateRange?.start &&
+                                          moment(
+                                            methods.dateRange.start
+                                          ).isSame(value, "day") &&
+                                          "bg-blue-200",
+                                        methods.focusedDate &&
+                                          moment(value).isSame(
+                                            methods.focusedDate,
+                                            "day"
+                                          ) &&
+                                          "ring ring-opacity-75 ring-blue-400",
                                         methods.dateRange &&
                                           methods.dateRange.start &&
                                           methods.dateRange.end &&
@@ -124,7 +142,6 @@ export const App = () => {
                                           ) &&
                                           "bg-blue-100"
                                       )}
-                                      tabIndex={value ? 0 : -1}
                                     >
                                       {display}
                                     </div>

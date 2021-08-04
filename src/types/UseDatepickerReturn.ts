@@ -1,6 +1,7 @@
 export type UseDatepickerReturn = {
   handleCalendarUpdate: (date: Date) => void;
   handleSelectedDate: (date: Date) => void;
+  handleFocusDate: (date: Date) => void;
   handleShowDatepicker: (show: boolean) => void;
   handleHoverDate: (date: Date) => void;
   toggleView: () => void;
@@ -13,6 +14,7 @@ export type UseDatepickerReturn = {
   monthsDisplayed: Date[];
   range: boolean;
   hoverDate: Date;
+  focusedDate: Date;
   date: Date;
   dateRange: {
     start: Date;
